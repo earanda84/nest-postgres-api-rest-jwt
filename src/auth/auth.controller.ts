@@ -10,15 +10,17 @@ import { Role } from '../common/enums/rol.enum';
 import { Auth } from './decorators/auth.decorator';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-// Se crea esta interface que extiende de la Requeste de Express, que agrega un elemento más que es el usuario junto con el email y el role
-interface RequestWithUser extends Request {
-  user: {
-    email: string;
-    role: string;
-  };
-}
+// // Se crea esta interface que extiende de la Requeste de Express, que agrega un elemento más que es el usuario junto con el email y el role
+// interface RequestWithUser extends Request {
+//   user: {
+//     email: string;
+//     role: string;
+//   };
+// }
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   // 8Para usar el servicio, se debe utilizar el servicio se debe crear un injectable
@@ -46,6 +48,7 @@ export class AuthController {
   // }
 
   // ruta con decorador unificado
+  @ApiBearerAuth()
   @Get('profile')
   // Este decorador personalizado recibe como parametro el rol del usuario, el cual se define en el service de la creación de usuario
   @Auth(Role.USER)
